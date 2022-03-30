@@ -13,9 +13,7 @@ CC=gcc
 CFLAGS= -Wall -ggdb
 RM= rm -f
 
-.PHONY: all
-
-all:wytar
+.PHONY: clean tidy
 
 wytar: wytar.c tar.c tar.h 
 	$(CC) $(CFLAGS) *.o -o wytar
