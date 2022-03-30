@@ -17,7 +17,7 @@ GDBFLAGS= -g -ggdb -ggdb3
 
 all:wytar
 
-wytar: main.o help.o tar.o untar.o general.o regular.o dir.o
+wytar: main.o tar.o untar.o general.o regular.o dir.o
     $(CC) $(CFLAGS) *.o -o wytar
     strip wytar
 
