@@ -12,16 +12,8 @@
 CC=gcc
 CFLAGS= -Wall -Wextra -Wfloat-equal -Wundef -Werror -std=gnu99 -fverbose-asm  -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Wstrict-overflow=5 -Wwrite-strings -Wconversion
 GDBFLAGS= -g -ggdb -ggdb3
+
 .PHONY: all clean docs
-
-remove:
-    \rm -rf /opt/wytar /bin/wytar
-
-install: all
-    mkdir /opt/wytar/
-    cp wytar /opt/wytar
-    cp help.doc /opt/wytar
-    ln /opt/wytar/wytar /bin/wytar
 
 all:wytar
 
@@ -49,6 +41,6 @@ regular.o: regular.c wytar.h
 
 dir.o: wytar.h
     $(CC) -c $(CFLAGS) dir.c -o dir.o
-	
+
 clean:
     \rm -rf *.o wytar docs
