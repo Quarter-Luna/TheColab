@@ -10,18 +10,17 @@
 #
 
 CC=gcc
-CFLAGS= -Wall -Wextra -Wfloat-equal -Wundef -Werror -std=gnu99 -fverbose-asm  -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Wstrict-overflow=5 -Wwrite-strings -Wconversion
-GDBFLAGS= -g -ggdb -ggdb3
+CFLAGS= -Wall -ggdb
 
 .PHONY: all
 
 all:wytar
 
 wytar: wytar.o tar.o untar.o general.o regular.o dir.o
-    $(CC) $(CFLAGS) *.o -o wytar
+	$(CC) $(CFLAGS) *.o -o wytar
 
 wytar.o: wytar.c wytar.h 
-    $(CC) -c $(CFLAGS) wytar.c -o wytar.o
+	$(CC) -c $(CFLAGS) wytar.c -o wytar.o
 
 tar.o: tar.c wytar.h
     $(CC) -c $(CFLAGS) tar.c -o tar.o
