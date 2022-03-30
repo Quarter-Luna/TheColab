@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "star.h"
+#include "wytar.h"
 void dir_untar(struct header_ustar *h)
 {
     mode_t mode;

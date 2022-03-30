@@ -10,7 +10,7 @@
 //
 
 #include <stdio.h>
-#include "star.h"
+#include "wytar.h"
 int main(int argc, char **argv)
 {
     switch (argc)

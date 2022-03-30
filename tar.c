@@ -2,7 +2,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "star.h"
+#include "wytar.h"
 void tar(int c, char **names)
 {
     int i;

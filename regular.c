@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-#include "star.h"
+#include "wytar.h"
 void regular_untar(FILE *tarf, struct header_ustar *h)
 {
     /*getting the file name from prefix/name*/

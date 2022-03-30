@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stddef.h>
-#include "star.h"
+#include "wytar.h"
 int file_exist(char *path)
 {
     FILE *fp;

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "star.h"
+#include "wytar.h"
 void untar(char *name)
 {
     FILE *tarptr;
