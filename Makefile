@@ -13,13 +13,21 @@ CC=gcc
 CFLAGS= -Wall -ggdb
 RM= rm -f
 
-.PHONY: clean tidy
+.PHONY: all clean tidy
 
-wytar: wytar.c tar.c tar.h 
-	$(CC) $(CFLAGS) wytar.c -o wytar
+all: wytar
+
+wytar: wytar.o tar.o
+	$(CC) $(CFLAGS) wytar.o tar.o -o wytar
+
+wytar.o: wytar.c
+	$(CC) $(CFLAGS) -c wytar.c
+
+tar.o: tar.c
+	$(CC) $(CFLAGS) -c tar.c
 
 clean:
-	${RM} wytar
+	${RM} *.o wytar
 
 tidy:
 	${RM} a.out core.* wytar
