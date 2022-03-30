@@ -16,9 +16,6 @@ int main(int argc, char **argv)
     switch (argc)
     {
     case 1:
-        show_help();
-        break;
-    case 2:
         untar(argv[1]);
         break;
     default:
