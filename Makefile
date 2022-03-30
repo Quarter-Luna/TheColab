@@ -13,16 +13,15 @@ CC=gcc
 CFLAGS= -Wall -Wextra -Wfloat-equal -Wundef -Werror -std=gnu99 -fverbose-asm  -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Wstrict-overflow=5 -Wwrite-strings -Wconversion
 GDBFLAGS= -g -ggdb -ggdb3
 
-.PHONY: all clean
+.PHONY: all
 
 all:wytar
 
-wytar: main.o tar.o untar.o general.o regular.o dir.o
+wytar: wytar.o tar.o untar.o general.o regular.o dir.o
     $(CC) $(CFLAGS) *.o -o wytar
-    strip wytar
 
-main.o: main.c wytar.h 
-    $(CC) -c $(CFLAGS) main.c -o main.o
+wytar.o: wytar.c wytar.h 
+    $(CC) -c $(CFLAGS) wytar.c -o wytar.o
 
 tar.o: tar.c wytar.h
     $(CC) -c $(CFLAGS) tar.c -o tar.o
@@ -38,6 +37,3 @@ regular.o: regular.c wytar.h
 
 dir.o: wytar.h
     $(CC) -c $(CFLAGS) dir.c -o dir.o
-
-clean:
-    \rm -rf *.o wytar docs
