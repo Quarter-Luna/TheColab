@@ -16,7 +16,7 @@ RM= rm -f
 .PHONY: clean tidy
 
 wytar: wytar.c tar.c tar.h 
-	$(CC) $(CFLAGS) *.o -o wytar
+	$(CC) $(CFLAGS) wytar.c -o wytar
 
 clean:
 	${RM} wytar
