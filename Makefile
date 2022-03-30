@@ -16,28 +16,39 @@ GDBFLAGS= -g -ggdb -ggdb3
 
 remove:
     \rm -rf /opt/wytar /bin/wytar
+
 install: all
     mkdir /opt/wytar/
     cp wytar /opt/wytar
     cp help.doc /opt/wytar
     ln /opt/wytar/wytar /bin/wytar
+
 all:wytar
+
 docs:
     doxygen
+
 wytar: main.o help.o tar.o untar.o general.o regular.o dir.o
     $(CC) $(CFLAGS) *.o -o wytar
     strip wytar
+
 main.o: main.c wytar.h 
     $(CC) -c $(CFLAGS) main.c -o main.o
+
 tar.o: tar.c wytar.h
     $(CC) -c $(CFLAGS) tar.c -o tar.o
+
 untar.o: untar.c wytar.h
     $(CC) -c $(CFLAGS) untar.c -o untar.o
+
 general.o: general.c wytar.h
     $(CC) -c $(CFLAGS) general.c -o general.o
+
 regular.o: regular.c wytar.h
     $(CC) -c $(CFLAGS) regular.c -o regular.o
+
 dir.o: wytar.h
     $(CC) -c $(CFLAGS) dir.c -o dir.o
+	
 clean:
     \rm -rf *.o wytar docs
