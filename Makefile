@@ -13,12 +13,9 @@ CC=gcc
 CFLAGS= -Wall -Wextra -Wfloat-equal -Wundef -Werror -std=gnu99 -fverbose-asm  -Wshadow -Wpointer-arith -Wcast-align -Wstrict-prototypes -Wstrict-overflow=5 -Wwrite-strings -Wconversion
 GDBFLAGS= -g -ggdb -ggdb3
 
-.PHONY: all clean docs
+.PHONY: all clean
 
 all:wytar
-
-docs:
-    doxygen
 
 wytar: main.o help.o tar.o untar.o general.o regular.o dir.o
     $(CC) $(CFLAGS) *.o -o wytar
