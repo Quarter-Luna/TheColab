@@ -1,0 +1,10 @@
+- Take arguments from the user using argv and argc
+- Use a for loop to go through the arguments
+    - Use c to create an archive, x to extract files from an archive(x and c cannot be used together)
+    - f used to declare what archive the user is trying to use
+        - Make sure that the archive name exists, otherwise perror and terminate the program
+    - If c or x is not clarified, then it is an error
+    - f filename must always be clarified or it is an error
+    - if a filesystem object cannot be found just perror and continue
+-
+     
