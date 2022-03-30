@@ -11,28 +11,17 @@
 
 CC=gcc
 CFLAGS= -Wall -ggdb
+RM= rm -f
 
 .PHONY: all
 
 all:wytar
 
-wytar: wytar.o tar.o untar.o general.o regular.o dir.o
+wytar: wytar.c tar.c tar.h 
 	$(CC) $(CFLAGS) *.o -o wytar
 
-wytar.o: wytar.c wytar.h 
-	$(CC) -c $(CFLAGS) wytar.c -o wytar.o
+clean:
+	${RM} wytar
 
-tar.o: tar.c wytar.h
-	$(CC) -c $(CFLAGS) tar.c -o tar.o
-
-untar.o: untar.c wytar.h
-	$(CC) -c $(CFLAGS) untar.c -o untar.o
-
-general.o: general.c wytar.h
-	$(CC) -c $(CFLAGS) general.c -o general.o
-
-regular.o: regular.c wytar.h
-	$(CC) -c $(CFLAGS) regular.c -o regular.o
-
-dir.o: wytar.h
-	$(CC) -c $(CFLAGS) dir.c -o dir.o
+tidy:
+	${RM} a.out core.* wytar
