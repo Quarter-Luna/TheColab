@@ -88,7 +88,8 @@ int main(int argc, char *argv[])
         case 'f':
             f = '1';
             break;
-        
+        case '-':
+            break;
         default:
             fprintf(stderr, "Error: Bad option, or -f not used, please use -f to declare the archive being used\n");
             return 0;
