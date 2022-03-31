@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     argc -= 3;
 
     int rc = 0;
-    char c = 0,          // create
+    char c = 0,         // create
         x = 0;          // extract
     char verbosity = 0; // 0: no print; 1: print file names; 2: print file properties
 
@@ -132,12 +132,7 @@ int main(int argc, char *argv[])
         }
 
         // perform operation
-        if ((a && (tar_write(fd, &archive, argc, files, verbosity) < 0)) ||     // append
-            (d && (tar_diff(stdout, archive, verbosity) < 0)) ||                // diff with current working directory
-            (r && (tar_remove(fd, &archive, argc, files, verbosity) < 0)) ||    // remove entries
-            (t && (tar_ls(stdout, archive, argc, files, verbosity + 1) < 0)) || // list entries
-            (u && (tar_update(fd, &archive, argc, files, verbosity) < 0)) ||    // update entries
-            (x && (tar_extract(fd, archive, argc, files, verbosity) < 0))       // extract entries
+        if ((x && (tar_extract(fd, archive, argc, files, verbosity) < 0)) // extract entries
         )
         {
             fprintf(stderr, "Exiting with error due to previous error\n");
