@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
         }
 
         // perform operation
-        if ((x && (tar_extract(fd, archive, argc -1, files, verbosity) < 0)) // extract entries
+        if ((x && (tar_extract(fd, archive, argc - 1, files, verbosity) < 0)) // extract entries
         )
         {
             fprintf(stderr, "Exiting with error due to previous error\n");
