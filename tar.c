@@ -182,10 +182,10 @@ int tar_write(const int fd, struct tar_t **archive, const size_t filecount, cons
     }
 
     // write entries first
-    // if (write_entries(fd, tar, archive, filecount, files, &offset, verbosity) < 0)
-    // {
-    //     WRITE_ERROR("Failed to write entries");
-    // }
+    if (write_entries(fd, tar, archive, filecount, files, &offset, verbosity) < 0)
+    {
+        WRITE_ERROR("Failed to write entries");
+    }
 
     // write ending data
     if (write_end_data(fd, offset, verbosity) < 0)
@@ -666,10 +666,10 @@ int format_tar_data(struct tar_t *entry, const char *filename, const char verbos
     }
 
     struct stat st;
-    // if (lstat(filename, &st))
-    // {
-    //     RC_ERROR("Cannot stat %s: %s", filename, strerror(rc));
-    // }
+    if (lstat(filename, &st))
+    {
+        RC_ERROR("Cannot stat %s: %s", filename, strerror(rc));
+    }
 
     // remove relative path
     int move = 0;
@@ -1026,10 +1026,10 @@ int write_entries(const int fd, struct tar_t **archive, struct tar_t **head, con
         *tar = malloc(sizeof(struct tar_t));
 
         // stat file
-        // if (format_tar_data(*tar, files[i], verbosity) < 0)
-        // {
-        //     WRITE_ERROR("Failed to stat %s", files[i]);
-        // }
+        if (format_tar_data(*tar, files[i], verbosity) < 0)
+        {
+            WRITE_ERROR("Failed to stat %s", files[i]);
+        }
 
         (*tar)->begin = *offset;
 
