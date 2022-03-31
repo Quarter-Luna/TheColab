@@ -3,7 +3,6 @@
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
-
 // generic error
 #define ERROR(fmt, ...)                                 \
     fprintf(stderr, "Error: " fmt "\n", ##__VA_ARGS__); \
@@ -64,52 +63,50 @@ int tar_read(const int fd, struct tar_t **archive)
     for (count = 0;; count++)
     {
         *tar = malloc(sizeof(struct tar_t));
-        
 
         update = 1;
         // if current block is all zeros
         if (iszeroed((*tar)->block, 512))
         {
-            }
+        }
 
-            // check if next block is all zeros as well
-            if (iszeroed((*tar)->block, 512))
+        // check if next block is all zeros as well
+        if (iszeroed((*tar)->block, 512))
+        {
+            tar_free(*tar);
+            *tar = NULL;
+
+            // skip to end of record
+            if (lseek(fd, RECORDSIZE - (offset % RECORDSIZE), SEEK_CUR) == (off_t)(-1))
             {
-                tar_free(*tar);
-                *tar = NULL;
-
-                // skip to end of record
-                if (lseek(fd, RECORDSIZE - (offset % RECORDSIZE), SEEK_CUR) == (off_t)(-1))
-                {
-                    RC_ERROR("Unable to seek file: %s", strerror(rc));
-                }
-
-                break;
+                RC_ERROR("Unable to seek file: %s", strerror(rc));
             }
 
-            update = 0;
+            break;
         }
 
-        // set current entry's file offset
-        (*tar)->begin = offset;
-
-        // skip over data and unfilled block
-        unsigned int jump = oct2uint((*tar)->size, 11);
-        if (jump % 512)
-        {
-            jump += 512 - (jump % 512);
-        }
-
-        // move file descriptor
-        offset += 512 + jump;
-        if (lseek(fd, jump, SEEK_CUR) == (off_t)(-1))
-        {
-            RC_ERROR("Unable to seek file: %s", strerror(rc));
-        }
-
-        // ready next value
-        tar = &((*tar)->next);
+        update = 0;
     }
+
+    // set current entry's file offset
+    (*tar)->begin = offset;
+
+    // skip over data and unfilled block
+    unsigned int jump = oct2uint((*tar)->size, 11);
+    if (jump % 512)
+    {
+        jump += 512 - (jump % 512);
+    }
+
+    // move file descriptor
+    offset += 512 + jump;
+    if (lseek(fd, jump, SEEK_CUR) == (off_t)(-1))
+    {
+        RC_ERROR("Unable to seek file: %s", strerror(rc));
+    }
+
+    // ready next value
+    tar = &((*tar)->next);
 
     return count;
 }
@@ -355,7 +352,6 @@ int format_tar_data(struct tar_t *entry, const char *filename)
     struct passwd pwd;
     char buffer[4096];
     struct passwd *result = NULL;
-    
 
     strncpy(entry->owner, buffer, sizeof(entry->owner) - 1);
 
@@ -371,7 +367,6 @@ int format_tar_data(struct tar_t *entry, const char *filename)
 
 int extract_entry(const int fd, struct tar_t *entry)
 {
-    
 
     if ((entry->type == REGULAR) || (entry->type == NORMAL) || (entry->type == CONTIGUOUS))
     {
@@ -392,7 +387,7 @@ int extract_entry(const int fd, struct tar_t *entry)
 
         if (recursive_mkdir(path, DEFAULT_DIR_MODE) < 0)
         {
-            
+
             free(path);
             return -1;
         }
@@ -531,8 +526,6 @@ int write_entries(const int fd, struct tar_t **archive, struct tar_t **head, con
                 (*tar)->name[len + 1] = '\0';
             }
 
-            
-
             // write metadata to (*tar) file
             if (write_size(fd, (*tar)->block, 512) != 512)
             {
@@ -579,7 +572,6 @@ int write_entries(const int fd, struct tar_t **archive, struct tar_t **head, con
         }
         else
         { // if (((*tar) -> type == REGULAR) || ((*tar) -> type == NORMAL) || ((*tar) -> type == CONTIGUOUS) || ((*tar) -> type == SYMLINK) || ((*tar) -> type == CHAR) || ((*tar) -> type == BLOCK) || ((*tar) -> type == FIFO)){
-            
 
             char tarred = 0; // whether or not the file has already been put into the archive
             if (((*tar)->type == REGULAR) || ((*tar)->type == NORMAL) || ((*tar)->type == CONTIGUOUS) || ((*tar)->type == SYMLINK))
@@ -670,7 +662,7 @@ int write_end_data(const int fd, int size)
     {
         if (write(fd, "\0", 1) != 1)
         {
-            
+
             return -1;
         }
     }
