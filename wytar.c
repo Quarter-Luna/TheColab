@@ -24,26 +24,75 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    if (argc == 2)
+    {
+        fprintf(stdout, "Usage: %s options(s) tarfile [sources]\n"
+                        "Usage: %s help\n"
+                        "\n"
+                        "Important:\n"
+                        "    This program is not meant to be a full tar implementation.\n"
+                        "    Only a subset of the functions the GNU tar utility has are supported.\n"
+                        "\n"
+                        "    Special files that already exist will not be replaced when extracting (no error)\n"
+                        "    Regular expression expansion/matching is not done.\n"
+                        "\n"
+                        "    options (only one allowed at a time):\n"
+                        "        a - append files to archive\n"
+                        "        c - create a new archive\n"
+                        "        d - diff the tar file with the workding directory\n"
+                        "        r - remove files from the directory\n"
+                        "        t - list the files in the directory\n"
+                        "        u - update entries that have newer modification times\n"
+                        "        x - extract from archive\n"
+                        "\n"
+                        "    other options:\n"
+                        "        v - make operation verbose\n"
+                        "\n"
+                        "Ex: %s vl archive.tar\n",
+                argv[0], argv[0], argv[0]);
+        return 0;
+    }
+
     argc -= 3;
 
     int rc = 0;
-    char c = 0,          // create
-        x = 0,          // extract
-        f = 0;          // filename
+    char a = 0,         // append
+        c = 0,          // create
+        d = 0,          // diff
+        r = 0,          // remove
+        t = 0,          // list
+        u = 0,          // update
+        x = 0;          // extract
+    char verbosity = 0; // 0: no print; 1: print file names; 2: print file properties
 
     // parse options
     for (int i = 0; argv[1][i]; i++)
     {
         switch (argv[1][i])
         {
+        case 'a':
+            a = 1;
+            break;
         case 'c':
             c = 1;
+            break;
+        case 'd':
+            d = 1;
+            break;
+        case 'r':
+            r = 1;
+            break;
+        case 't':
+            t = 1;
+            break;
+        case 'u':
+            u = 1;
             break;
         case 'x':
             x = 1;
             break;
-        case 'f' :
-            f = 1;
+        case 'v':
+            verbosity++;
             break;
         case '-':
             break;
@@ -56,7 +105,7 @@ int main(int argc, char *argv[])
     }
 
     // make sure only one of these options was selected
-    const char used = c + x;
+    const char used = a + c + d + r + t + u + x;
     if (used > 1)
     {
         fprintf(stderr, "Error: Cannot have so all of these flags at once\n");
@@ -64,7 +113,7 @@ int main(int argc, char *argv[])
     }
     else if (used < 1)
     {
-        fprintf(stderr, "Error: Need either c or x options set\n");
+        fprintf(stderr, "Error: Need one of 'acdlrux' options set\n");
         return -1;
     }
 
@@ -83,7 +132,7 @@ int main(int argc, char *argv[])
             return -1;
         }
 
-        if (tar_write(fd, &archive, argc, files) < 0)
+        if (tar_write(fd, &archive, argc, files, verbosity) < 0)
         {
             rc = -1;
         }
@@ -98,7 +147,7 @@ int main(int argc, char *argv[])
         }
 
         // read in data
-        if (tar_read(fd, &archive) < 0)
+        if (tar_read(fd, &archive, verbosity) < 0)
         {
             tar_free(archive);
             close(fd);
@@ -106,7 +155,12 @@ int main(int argc, char *argv[])
         }
 
         // perform operation
-        if ((x && (tar_extract(fd, archive, argc, files) < 0))       // extract entries
+        if ((a && (tar_write(fd, &archive, argc, files, verbosity) < 0)) ||     // append
+            (d && (tar_diff(stdout, archive, verbosity) < 0)) ||                // diff with current working directory
+            (r && (tar_remove(fd, &archive, argc, files, verbosity) < 0)) ||    // remove entries
+            (t && (tar_ls(stdout, archive, argc, files, verbosity + 1) < 0)) || // list entries
+            (u && (tar_update(fd, &archive, argc, files, verbosity) < 0)) ||    // update entries
+            (x && (tar_extract(fd, archive, argc, files, verbosity) < 0))       // extract entries
         )
         {
             fprintf(stderr, "Exiting with error due to previous error\n");
