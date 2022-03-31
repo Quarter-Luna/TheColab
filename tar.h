@@ -90,7 +90,7 @@ struct tar_t
 // core functions //////////////////////////////////////////////////////////////
 // read a tar file
 // archive should be address to null pointer
-int tar_read(const int fd, struct tar_t **archive, const char verbosity);
+int tar_read(const int fd, struct tar_t **archive);
 
 // write to a tar file
 // if archive contains data, the new data will be appended to the back of the file (terminating blocks will be rewritten)
@@ -112,20 +112,20 @@ int tar_extract(const int fd, struct tar_t *archive, const size_t filecount, con
 struct tar_t *exists(struct tar_t *archive, const char *filename, const char ori);
 
 // read file and construct metadata
-int format_tar_data(struct tar_t *entry, const char *filename, const char verbosity);
+int format_tar_data(struct tar_t *entry, const char *filename);
 
 // calculate checksum (6 ASCII octet digits + NULL + space)
 unsigned int calculate_checksum(struct tar_t *entry);
 
 // extracts a single entry
 // expects file descriptor offset to already be set to correct location
-int extract_entry(const int fd, struct tar_t *entry, const char verbosity);
+int extract_entry(const int fd, struct tar_t *entry);
 
 // write entries to a tar file
-int write_entries(const int fd, struct tar_t **archive, struct tar_t **head, const size_t filecount, const char *files[], int *offset, const char verbosity);
+int write_entries(const int fd, struct tar_t **archive, struct tar_t **head, const size_t filecount, const char *files[], int *offset);
 
 // add ending data
-int write_end_data(const int fd, int size, const char verbosity);
+int write_end_data(const int fd, int size);
 
 // check if entry is a match for any of the given file names
 // returns index + 1 if match is found

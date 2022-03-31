@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 
     int rc = 0;
     char c = 0,          // create
-        x = 0;          // extract
+        x = 0,          // extract
         f = 0;          // filename
 
     // parse options
