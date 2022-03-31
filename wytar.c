@@ -114,8 +114,8 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Error: Must use -f to declare the archive being used\n");
     }
 
-    const char *filename = argv[2];
-    const char **files = (const char **)&argv[3];
+    const char *filename = argv[3];
+    const char **files = (const char **)&argv[4];
 
     // //////////////////////////////////////////
 
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
         }
 
         // perform operation
-        if ((x && (tar_extract(fd, archive, argc, files, verbosity) < 0)) // extract entries
+        if ((x && (tar_extract(fd, archive, argc -1, files, verbosity) < 0)) // extract entries
         )
         {
             fprintf(stderr, "Exiting with error due to previous error\n");
