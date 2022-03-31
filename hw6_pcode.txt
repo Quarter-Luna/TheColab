@@ -6,5 +6,16 @@
     - If c or x is not clarified, then it is an error
     - f filename must always be clarified or it is an error
     - if a filesystem object cannot be found just perror and continue
--
+-If c and x is used then error and return
+-Set lenght of the file and filename for argv and argc
+- Create archive
+- If option c, 
+    -Open file
+    - Write into file
+-else
+    - Open file
+    - check that no files are added after the archive name is listed
+    - extract the files from the tar archive given
+- Close and return
+
      
