@@ -9,6 +9,12 @@
 // Collaborated with Ian Moon on this Homework
 // Used the tar program found at https://github.com/calccrypto/tar/blob/master/main.c to complete this homework
 // Copyright (c) 2015 Jason Lee
+// Changes made to program:
+/*
+        Added verification to make sure the user used the -f option
+        Removed all options that aren't c or x
+        Modified main so that filecount and files lined up with another option being added.
+*/
 //
 
 #include <stdio.h>

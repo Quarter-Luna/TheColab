@@ -7,6 +7,7 @@
 //
 // This is a wytar header used to define functions used in tar.c and wytar.c
 // Collaborated with Ian Moon on this Homework
+// Copyright (c) 2015 Jason Lee
 //
 #ifndef __TAR__
 #define __TAR__

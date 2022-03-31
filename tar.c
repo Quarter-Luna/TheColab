@@ -7,6 +7,7 @@
 //
 // This is a tar program designed to tar multiple different filesystems objects given by the user
 // Collaborated with Ian Moon on this Homework
+// Copyright (c) 2015 Jason Lee
 //
 #include "tar.h"
 
