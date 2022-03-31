@@ -2,6 +2,8 @@
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
+
+
 // generic error
 #define ERROR(fmt, ...)                                 \
     fprintf(stderr, "Error: " fmt "\n", ##__VA_ARGS__); \
@@ -62,24 +64,12 @@ int tar_read(const int fd, struct tar_t **archive)
     for (count = 0;; count++)
     {
         *tar = malloc(sizeof(struct tar_t));
-        if (update && (read_size(fd, (*tar)->block, 512) != 512))
-        {
-            V_PRINT(stderr, "Error: Bad read. Stopping");
-            tar_free(*tar);
-            *tar = NULL;
-            break;
-        }
+        
 
         update = 1;
         // if current block is all zeros
         if (iszeroed((*tar)->block, 512))
         {
-            if (read_size(fd, (*tar)->block, 512) != 512)
-            {
-                V_PRINT(stderr, "Error: Bad read. Stopping");
-                tar_free(*tar);
-                *tar = NULL;
-                break;
             }
 
             // check if next block is all zeros as well
@@ -365,11 +355,7 @@ int format_tar_data(struct tar_t *entry, const char *filename)
     struct passwd pwd;
     char buffer[4096];
     struct passwd *result = NULL;
-    if (getpwuid_r(st.st_uid, &pwd, buffer, sizeof(buffer), &result))
-    {
-        const int err = errno;
-        V_PRINT(stderr, "Warning: Unable to get username of uid %u for entry '%s': %s", st.st_uid, filename, strerror(err));
-    }
+    
 
     strncpy(entry->owner, buffer, sizeof(entry->owner) - 1);
 
@@ -380,15 +366,12 @@ int format_tar_data(struct tar_t *entry, const char *filename)
         strncpy(entry->group, grp->gr_name, sizeof(entry->group) - 1);
     }
 
-    // get the checksum
-    calculate_checksum(entry);
-
     return 0;
 }
 
 int extract_entry(const int fd, struct tar_t *entry)
 {
-    V_PRINT(stdout, "%s", entry->name);
+    
 
     if ((entry->type == REGULAR) || (entry->type == NORMAL) || (entry->type == CONTIGUOUS))
     {
@@ -409,7 +392,7 @@ int extract_entry(const int fd, struct tar_t *entry)
 
         if (recursive_mkdir(path, DEFAULT_DIR_MODE) < 0)
         {
-            V_PRINT(stderr, "Could not make directory %s", path);
+            
             free(path);
             return -1;
         }
@@ -546,10 +529,9 @@ int write_entries(const int fd, struct tar_t **archive, struct tar_t **head, con
             {
                 (*tar)->name[len] = '/';
                 (*tar)->name[len + 1] = '\0';
-                calculate_checksum(*tar);
             }
 
-            V_PRINT(stdout, "Writing %s", (*tar)->name);
+            
 
             // write metadata to (*tar) file
             if (write_size(fd, (*tar)->block, 512) != 512)
@@ -597,7 +579,7 @@ int write_entries(const int fd, struct tar_t **archive, struct tar_t **head, con
         }
         else
         { // if (((*tar) -> type == REGULAR) || ((*tar) -> type == NORMAL) || ((*tar) -> type == CONTIGUOUS) || ((*tar) -> type == SYMLINK) || ((*tar) -> type == CHAR) || ((*tar) -> type == BLOCK) || ((*tar) -> type == FIFO)){
-            V_PRINT(stdout, "Writing %s", (*tar)->name);
+            
 
             char tarred = 0; // whether or not the file has already been put into the archive
             if (((*tar)->type == REGULAR) || ((*tar)->type == NORMAL) || ((*tar)->type == CONTIGUOUS) || ((*tar)->type == SYMLINK))
@@ -616,9 +598,6 @@ int write_entries(const int fd, struct tar_t **archive, struct tar_t **head, con
 
                     // change size to 0
                     memset((*tar)->size, '0', sizeof((*tar)->size) - 1);
-
-                    // recalculate checksum
-                    calculate_checksum(*tar);
                 }
             }
 
@@ -691,7 +670,7 @@ int write_end_data(const int fd, int size)
     {
         if (write(fd, "\0", 1) != 1)
         {
-            V_PRINT(stderr, "Error: Unable to close tar file");
+            
             return -1;
         }
     }
@@ -703,7 +682,6 @@ int write_end_data(const int fd, int size)
         {
             if (write(fd, "\0", 1) != 1)
             {
-                V_PRINT(stderr, "Error: Unable to close tar file");
                 return -1;
             }
         }
