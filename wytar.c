@@ -54,7 +54,8 @@ int main(int argc, char *argv[])
 
     int rc = 0;
     char c = 0,         // create
-        x = 0;          // extract
+        x = 0,          // extract
+        f = 0;
     char verbosity = 0; // 0: no print; 1: print file names; 2: print file properties
 
     // parse options
@@ -68,6 +69,8 @@ int main(int argc, char *argv[])
         case 'x':
             x = 1;
             break;
+        case 'f':
+            f = 1;
         case 'v':
             verbosity++;
             break;
@@ -90,8 +93,12 @@ int main(int argc, char *argv[])
     }
     else if (used < 1)
     {
-        fprintf(stderr, "Error: Need one of 'acdlrux' options set\n");
+        fprintf(stderr, "Error: Need one of 'cx' options set\n");
         return -1;
+    }
+
+    if (f != 1){
+        fprintf(stderr, "Error: Must use -f to declare the archive being used.")
     }
 
     const char *filename = argv[2];
