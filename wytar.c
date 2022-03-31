@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         switch (argv[2][i])
         {
         case 'f':
-            f = '1';
+            f = 1;
             break;
         case '-':
             break;
