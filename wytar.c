@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
     }
 
     if (f != 1){
-        fprintf(stderr, "Error: Must use -f to declare the archive being used.")
+        fprintf(stderr, "Error: Must use -f to declare the archive being used.");
     }
 
     const char *filename = argv[2];
