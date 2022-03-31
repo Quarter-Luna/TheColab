@@ -94,36 +94,19 @@ int tar_read(const int fd, struct tar_t **archive, const char verbosity);
 
 // write to a tar file
 // if archive contains data, the new data will be appended to the back of the file (terminating blocks will be rewritten)
-int tar_write(const int fd, struct tar_t **archive, const size_t filecount, const char *files[], const char verbosity);
+int tar_write(const int fd, struct tar_t **archive, const size_t filecount, const char *files[]);
 
 // recursive freeing of entries
 void tar_free(struct tar_t *archive);
 // /////////////////////////////////////////////////////////////////////////////
 
 // utilities ///////////////////////////////////////////////////////////////////
-// print contents of archive
-// verbosity should be greater than 0
-int tar_ls(FILE *f, struct tar_t *archive, const size_t filecount, const char *files[], const char verbosity);
 
 // extracts files from an archive
-int tar_extract(const int fd, struct tar_t *archive, const size_t filecount, const char *files[], const char verbosity);
-
-// update files in tar with provided list
-int tar_update(const int fd, struct tar_t **archive, const size_t filecount, const char *files[], const char verbosity);
-
-// remove entries from tar
-int tar_remove(const int fd, struct tar_t **archive, const size_t filecount, const char *files[], const char verbosity);
-
-// show files that are missing from the current directory
-int tar_diff(FILE *f, struct tar_t *archive, const char verbosity);
+int tar_extract(const int fd, struct tar_t *archive, const size_t filecount, const char *files[]);
 // /////////////////////////////////////////////////////////////////////////////
 
 // internal functions; generally don't call from outside ///////////////////////
-// print raw data with definitions (meant for debugging)
-int print_entry_metadata(FILE *f, struct tar_t *entry);
-
-// print metadata of entire tar file
-int print_tar_metadata(FILE *f, struct tar_t *archive);
 
 // check if file with original name/modified name exists
 struct tar_t *exists(struct tar_t *archive, const char *filename, const char ori);
@@ -133,10 +116,6 @@ int format_tar_data(struct tar_t *entry, const char *filename, const char verbos
 
 // calculate checksum (6 ASCII octet digits + NULL + space)
 unsigned int calculate_checksum(struct tar_t *entry);
-
-// print single entry
-// verbosity should be greater than 0
-int ls_entry(FILE *f, struct tar_t *archive, const size_t filecount, const char *files[], const char verbosity);
 
 // extracts a single entry
 // expects file descriptor offset to already be set to correct location
