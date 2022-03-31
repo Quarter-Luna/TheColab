@@ -69,8 +69,6 @@ int main(int argc, char *argv[])
         case 'x':
             x = 1;
             break;
-        case 'f':
-            f = 1;
         case 'v':
             verbosity++;
             break;
@@ -82,6 +80,19 @@ int main(int argc, char *argv[])
             return 0;
             break;
         }
+    }
+    for (int i = 0; argv[2][i]; i++)
+    {
+        switch (argv[2][i])
+        {
+        case 'f':
+            f = '1';
+            break;
+        }
+        default:
+            fprintf(stderr, "Error: Bad option, or -f not used, please use -f to declare the archive being used\n");
+            return 0;
+            break;
     }
 
     // make sure only one of these options was selected
@@ -98,7 +109,7 @@ int main(int argc, char *argv[])
     }
 
     if (f != 1){
-        fprintf(stderr, "Error: Must use -f to declare the archive being used.");
+        fprintf(stderr, "Error: Must use -f to declare the archive being used\n");
     }
 
     const char *filename = argv[2];
