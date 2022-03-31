@@ -7,6 +7,8 @@
 //
 // This is a wytar program designed to tar multiple different filesystems objects given by the user
 // Collaborated with Ian Moon on this Homework
+// Used the tar program found at https://github.com/calccrypto/tar/blob/master/main.c to complete this homework
+// Copyright (c) 2015 Jason Lee
 //
 
 #include <stdio.h>
@@ -37,12 +39,7 @@ int main(int argc, char *argv[])
                         "    Regular expression expansion/matching is not done.\n"
                         "\n"
                         "    options (only one allowed at a time):\n"
-                        "        a - append files to archive\n"
                         "        c - create a new archive\n"
-                        "        d - diff the tar file with the workding directory\n"
-                        "        r - remove files from the directory\n"
-                        "        t - list the files in the directory\n"
-                        "        u - update entries that have newer modification times\n"
                         "        x - extract from archive\n"
                         "\n"
                         "    other options:\n"
@@ -56,12 +53,7 @@ int main(int argc, char *argv[])
     argc -= 3;
 
     int rc = 0;
-    char a = 0,         // append
-        c = 0,          // create
-        d = 0,          // diff
-        r = 0,          // remove
-        t = 0,          // list
-        u = 0,          // update
+    char c = 0,          // create
         x = 0;          // extract
     char verbosity = 0; // 0: no print; 1: print file names; 2: print file properties
 
@@ -70,23 +62,8 @@ int main(int argc, char *argv[])
     {
         switch (argv[1][i])
         {
-        case 'a':
-            a = 1;
-            break;
         case 'c':
             c = 1;
-            break;
-        case 'd':
-            d = 1;
-            break;
-        case 'r':
-            r = 1;
-            break;
-        case 't':
-            t = 1;
-            break;
-        case 'u':
-            u = 1;
             break;
         case 'x':
             x = 1;
@@ -105,7 +82,7 @@ int main(int argc, char *argv[])
     }
 
     // make sure only one of these options was selected
-    const char used = a + c + d + r + t + u + x;
+    const char used = c + x;
     if (used > 1)
     {
         fprintf(stderr, "Error: Cannot have so all of these flags at once\n");
